@@ -16,13 +16,12 @@ BOT_NAME = config.bot_name
 
 log = logging.getLogger(BOT_NAME)
 client = commands.Bot(command_prefix='cc!')
-client.ui = UI(client, slash_options={'auto_sync': False})
+client.ui = UI(client, slash_options={'auto_sync': True, "sync_on_cog": True})
 client.http.token = DISCORD_TOKEN
 client.logger = logger.register_logger("bot.log", BOT_NAME)
 client.db = Database()
 client.db.connect()
 
-# client.loop.run_until_complete(loadModules(client))
 
 @client.listen('on_connect')
 async def on_connect():
