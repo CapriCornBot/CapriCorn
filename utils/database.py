@@ -1,6 +1,4 @@
-import os
 import logging
-from re import T
 from config import config
 
 
@@ -11,6 +9,9 @@ log = logging.getLogger(config.bot_name)
 
 class Database:
     def __init__(self) -> None:
+        """Init Database
+        """
+
         import mysql.connector
         from mysql.connector import cursor as curs
         # get credits from environment variables
@@ -26,12 +27,14 @@ class Database:
         self.cursor: curs.MySQLCursorBuffered = None
     
     def connect(self) -> None:
+        """Connect to databse"""
         self.connection = mysql.connector.connect(user=config.mysql_user, password=config.mysql_password, host=config.mysql_host, port=config.mysql_port, database=config.mysql_db, buffered=True)
         self.connection.autocommit = True
         self.cursor: curs.MySQLCursorBuffered = self.connection.cursor(dictionary=True)
         log.info('Connected to database')
     
     def disconnect(self) -> None:
+        """Disconnects"""
         try: 
             self.cursor.close()
         except AttributeError:

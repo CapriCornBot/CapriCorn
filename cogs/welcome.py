@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 
 from discord_ui.cogs import subslash_cog
+from discord_ui import UI
 
 
 class Info:
@@ -17,7 +18,7 @@ class Welcome(commands.Cog):
         self.welcome_message = "Wilkommen %user%"
     
     @commands.Cog.listener()
-    async def on_member_join(member: discord.Member):
+    async def on_member_join(self, member: discord.Member):
         await self.bot.fetch_channel("883465097283002443").send(self.welcome_message.replace("%user%", member.mention))
 
     @commands.command("test")
