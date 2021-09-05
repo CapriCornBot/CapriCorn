@@ -10,6 +10,7 @@
     "cog_embed_builder_component_labels_p1_title": "Title",
     "cog_embed_builder_component_labels_p1_description": "Description",
     "cog_embed_builder_component_labels_p1_author": "Author",
+    "cog_embed_builder_component_labels_p1_color": "Color (Hex)",
     "cog_embed_builder_component_labels_select_embed": "Embed %number%",
     "cog_embed_builder_edit_invalid_position": "Invalid Embed Position! Select an valid Embed",
     "cog_embed_builder_edit_failed": "Failed to edit the Embed!",
