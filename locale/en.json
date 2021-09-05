@@ -1,3 +1,4 @@
 {
-    "global_embed_error_title": "Error"
+    "global_embed_error_title": "Error",
+    "cog_embed_builder_edit_not_own": "You can only edit Messages send by me!"
 }
