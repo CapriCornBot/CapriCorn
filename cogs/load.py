@@ -42,6 +42,7 @@ def load_cogs(client: commands.Bot):
                 f"║ ❌ ║ {middle_text(x2.Info.name)} ║ {middle_text(x2.Info.version, 8)} ║ {middle_text(x2.Info.author, 10)} ║ {middle_text(x2.Info.description, 30)}"
             )
             client.logger.error(x3)
+            raise
             moduleFailCount = moduleFailCount + 1
     client.logger.info(
         "╠════════╩══════════════════════╩══════════╩═════════════════╩════════════════════════════════╩══════════╣"
@@ -71,7 +72,6 @@ def load_cogs(client: commands.Bot):
 
     # client.logger.info("Alle Module gestartet!")
     client.dispatch("modules_loaded")
-
 
 def middle_text(txt, max_s=20):
     return txt + " " * (max_s - len(txt))

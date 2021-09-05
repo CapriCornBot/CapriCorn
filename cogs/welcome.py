@@ -21,9 +21,9 @@ class Welcome(commands.Cog):
     async def on_member_join(self, member: discord.Member):
         await self.bot.fetch_channel("883465097283002443").send(self.welcome_message.replace("%user%", member.mention))
 
-    @commands.command("test")
+    @commands.command("cog_wlc_test")
     async def test(self, ctx):
-        await ctx.send("okayy")
+        await self.bot.dispatch("member_join", ctx.author)
 
     @subslash_cog(base_names="set", guild_ids=[883465097283002439])
     async def welcome_message(self, ctx, msg: str):

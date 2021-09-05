@@ -29,7 +29,7 @@ class Config:
     @property
     def mysql_db(self):
         load_dotenv()
-        return os.getenv('MYSQL_DB')
+        return os.getenv('MYSQL_DATABASE')
     @property
     def mysql_port(self):
         load_dotenv()

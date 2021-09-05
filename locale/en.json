@@ -1,4 +1,27 @@
 {
     "global_embed_error_title": "Error",
-    "cog_embed_builder_edit_not_own": "You can only edit Messages send by me!"
+    "global_embed_success_title": "Success",
+    "global_embed_info_title": "Info",
+    "cog_embed_builder_edit_not_own": "You can only edit Messages send by me!",
+    "cog_embed_builder_select_embed": "Select the position of the embed!",
+    "cog_embed_builder_you_can_edit_now": "You can now edit the Embed! Preview in this message! Interact with the Buttons!",
+    "cog_embed_builder_component_labels_p1_save": "Save",
+    "cog_embed_builder_component_labels_p1_cancel": "Cancel",
+    "cog_embed_builder_component_labels_p1_title": "Title",
+    "cog_embed_builder_component_labels_p1_description": "Description",
+    "cog_embed_builder_component_labels_p1_author": "Author",
+    "cog_embed_builder_component_labels_select_embed": "Embed %number%",
+    "cog_embed_builder_edit_invalid_position": "Invalid Embed Position! Select an valid Embed",
+    "cog_embed_builder_edit_failed": "Failed to edit the Embed!",
+    "cog_embed_builder_default_embed_title": "Edit this with \"title\"",
+    "cog_embed_builder_default_embed_description": "Edit this with \"description\"",
+    "cog_embed_builder_default_embed_sent": "Embed was send in %channel%",
+    "cog_embed_builder_canceled": "Embed edit was canceled!",
+    "cog_embed_builder_saved": "Embed edited successfull",
+    "cog_embed_builder_timeout": "You did not answer!",
+    "com_embed_builder_wait_for_message": "Waiting for message",
+    "cog_embed_builder_component_labels_p2_author_name": "Author name",
+    "cog_embed_builder_component_labels_p2_author_url": "Author URL",
+    "cog_embed_builder_component_labels_p2_author_icon": "Icon URL",
+    "cog_embed_builder_component_labels_p2_back": "Back"
 }

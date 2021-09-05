@@ -1,14 +1,15 @@
 from utils.database import Database
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 from discord_ui import UI
 import os
 from dotenv import load_dotenv
-from modules.moduleManager import middle_text#, loadModules
-from cogs.load import load_cogs
+from cogs.load import load_cogs, middle_text
 from utils import logger
 from config import config
 import logging
+import threading
+
 load_dotenv()
 
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
@@ -16,10 +17,10 @@ BOT_NAME = config.bot_name
 
 log = logging.getLogger(BOT_NAME)
 client = commands.Bot(command_prefix='cc!')
-client.ui = UI(client, slash_options={'auto_sync': True, "sync_on_cog": True})
+client.ui = UI(client, slash_options={'auto_sync': False, "sync_on_cog": True})
 client.http.token = DISCORD_TOKEN
 client.logger = logger.register_logger("bot.log", BOT_NAME)
-client.db = Database()
+client.db = Database(client)
 client.db.connect()
 
 
@@ -44,6 +45,8 @@ async def on_connect():
     log.info(
         "╚═════════════════╩══════════════════════════════════════════════════════════════════════════════════════╝"
     )
+    #client.loop.create_task(client.www.app.run(debug=True, use_reloader=False))
+    #client.www.thread.start()
 
 
 load_cogs(client)

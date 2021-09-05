@@ -8,10 +8,10 @@ from mysql.connector import cursor as curs
 log = logging.getLogger(config.bot_name)
 
 class Database:
-    def __init__(self) -> None:
+    def __init__(self, client) -> None:
         """Init Database
         """
-
+        self.client = client
         import mysql.connector
         from mysql.connector import cursor as curs
         # get credits from environment variables
@@ -32,6 +32,7 @@ class Database:
         self.connection.autocommit = True
         self.cursor: curs.MySQLCursorBuffered = self.connection.cursor(dictionary=True)
         log.info('Connected to database')
+        self.client.dispatch("mysql_connected")
     
     def disconnect(self) -> None:
         """Disconnects"""
@@ -55,10 +56,10 @@ class Database:
     def execute(self, query: str, params: dict = None) -> None:
         self.cursor.execute(query, params)
     
-    def fetch_one(self) -> dict:
+    def fetchone(self) -> dict:
         return self.cursor.fetchone()
     
-    def fetch_all(self) -> list:
+    def fetchall(self) -> list:
         return self.cursor.fetchall()
     
     def commit(self) -> None:
