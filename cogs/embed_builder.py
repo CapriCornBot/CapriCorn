@@ -61,20 +61,37 @@ class EmbedBuilder(commands.Cog):
                 Button("emb:edit:p2:back", locale.get_message("cog_embed_builder_component_labels_p2_back"), color="green")
             ]
         ]
-        def field_components(can_edit: bool):
+        def field_components(used_fields = 0, max_fields: int = 25):
             field_components_1 = [
                 [
-                    Button("emb:edit:p3:add", locale.get_message("cog_embed_builder_component_labels_p3_add"), color="green"),
+                    Button("emb:edit:p3:add", locale.get_message("cog_embed_builder_component_labels_p3_add", used=used_fields, max=max_fields), color="green"),
                     Button("emb:edit:p3:remove", locale.get_message("cog_embed_builder_component_labels_p3_remove"), color="red"),
                     Button("emb:edit:p3:edit", locale.get_message("cog_embed_builder_component_labels_p3_edit"), color="green")
                 ],
                 [
-                    Button("emb:edit:p3:back", locale.get_message("cog_embed_builder_component_labels_p3_back"), color="green")
+                    Button("emb:edit:p3:back", locale.get_message("cog_embed_builder_component_labels_p3_back"), color="green"),
                 ]
             ]
-            if can_edit == False:
+            if used_fields == max_fields:
+                field_components_1[0][0].disabled = True
+            if used_fields == 0:
+                field_components_1[0][1].disabled = True
                 field_components_1[0][2].disabled = True
             return field_components_1
+        
+        def field_edit_components(index, inline = True):
+            cmpnts = [
+                [
+                    Button(f"emb:edit:p4:name:{index}", locale.get_message("cog_embed_builder_component_labels_p4_title")),
+                    Button(f"emb:edit:p4:value:{index}", locale.get_message("cog_embed_builder_component_labels_p4_value")),
+                    Button(f"emb:edit:p4:inline:{index}", locale.get_message("cog_embed_builder_component_labels_p4_inline"), color="green" if inline else "red"),
+                ],
+                [
+                    Button("emb:edit:p4:back", locale.get_message("cog_embed_builder_component_labels_p4_back"), color="green"),
+                    Button("emb:edit:main", "\u200b", emoji="🏠"),
+                ]
+            ]
+            return cmpnts
 
         msg = None
         embed_position = 0
@@ -105,6 +122,7 @@ class EmbedBuilder(commands.Cog):
             #await msg.edit(embed=embed)
         while True:
             set_components = (False, None)
+            edit_after = True
             try:
                 #actions += 1
                 pressed_btn: PressedButton = await msg.wait_for("button", self.bot, by=ctx.author, timeout=60)
@@ -114,7 +132,7 @@ class EmbedBuilder(commands.Cog):
                     try:
                         actions +=1
                         
-                        await msg.edit(content=locale.get_message("com_embed_builder_wait_for_message"), component_state=False)
+                        await msg.edit(content=locale.get_message("cog_embed_builder_wait_for_message"), component_state=False)
                         await msg.disable_components()
 
                         w_f = await self.bot.wait_for("message", check=lambda m: m.author.id == ctx.author.id, timeout=30)
@@ -128,7 +146,7 @@ class EmbedBuilder(commands.Cog):
                     await pressed_btn.respond()
                     try:
                         actions +=1
-                        await msg.edit(content=locale.get_message("com_embed_builder_wait_for_message"))
+                        await msg.edit(content=locale.get_message("cog_embed_builder_wait_for_message"))
                         await msg.disable_components()
                         w_f = await self.bot.wait_for("message", check=lambda m: m.author.id == ctx.author.id, timeout=30)
                         embed.description = w_f.content
@@ -142,16 +160,12 @@ class EmbedBuilder(commands.Cog):
                     await msg.edit(components=author_components)
                 elif pressed_btn.custom_id == "emb:edit:p1:fields":
                     await pressed_btn.respond()
-                    print(len(embed.fields))
-                    if len(embed.fields) == 0:
-                        await msg.edit(components=field_components(False))
-                    else:
-                        await msg.edit(components=field_components(True))
+                    await msg.edit(components=field_components(len(embed.fields)))
                 elif pressed_btn.custom_id == "emb:edit:p1:color":
                     await pressed_btn.respond()
                     try:
                         actions +=1
-                        await msg.edit(content=locale.get_message("com_embed_builder_wait_for_message"))
+                        await msg.edit(content=locale.get_message("cog_embed_builder_wait_for_message"))
                         await msg.disable_components()
                         w_f: discord.Message = await self.bot.wait_for("message", check=lambda m: m.author.id == ctx.author.id, timeout=30)
                         hex_int = int(w_f.content, 16)
@@ -173,8 +187,7 @@ class EmbedBuilder(commands.Cog):
                         pass
                     await ctx.channel.purge(limit=actions, check=lambda m: m.author.id == ctx.author.id, bulk=True)
                     await msg.edit(embed=embeds.success(locale.get_message("cog_embed_builder_saved")), content=None, components=None)
-                    break
-                
+                    break                
                 elif pressed_btn.custom_id == "emb:edit:p1:cancel":
                     await pressed_btn.respond()
                     await msg.edit(embed = embeds.success(locale.get_message("cog_embed_builder_canceled")), components=None)
@@ -183,7 +196,7 @@ class EmbedBuilder(commands.Cog):
                     await pressed_btn.respond()
                     try:
                         actions +=1
-                        await msg.edit(content=locale.get_message("com_embed_builder_wait_for_message"))
+                        await msg.edit(content=locale.get_message("cog_embed_builder_wait_for_message"))
                         await msg.disable_components()
                         w_f = await self.bot.wait_for("message", check=lambda m: m.author.id == ctx.author.id, timeout=30)
                         url = embed.author.url
@@ -199,7 +212,7 @@ class EmbedBuilder(commands.Cog):
                     await pressed_btn.respond()
                     try:
                         actions +=1
-                        await msg.edit(content=locale.get_message("com_embed_builder_wait_for_message"))
+                        await msg.edit(content=locale.get_message("cog_embed_builder_wait_for_message"))
                         await msg.disable_components()
                         w_f = await self.bot.wait_for("message", check=lambda m: m.author.id == ctx.author.id, timeout=30)
                         url = w_f.content
@@ -215,7 +228,7 @@ class EmbedBuilder(commands.Cog):
                     await pressed_btn.respond()
                     try:
                         actions +=1
-                        await msg.edit(content=locale.get_message("com_embed_builder_wait_for_message"))
+                        await msg.edit(content=locale.get_message("cog_embed_builder_wait_for_message"))
                         await msg.disable_components()
                         w_f = await self.bot.wait_for("message", check=lambda m: m.author.id == ctx.author.id, timeout=30)
                         url = embed.author.url
@@ -233,11 +246,78 @@ class EmbedBuilder(commands.Cog):
                 elif pressed_btn.custom_id == "emb:edit:p3:back":
                     await pressed_btn.respond()
                     set_components = (True, components)
+                elif pressed_btn.custom_id == "emb:edit:p3:add":
+                    await pressed_btn.respond()
+                    embed.add_field(name=locale.get_message("cog_embed_builder_default_field_name"), value=locale.get_message("cog_embed_builder_default_field_value"), inline=False)
+                    set_components = (True, field_components(len(embed.fields)))
+                elif pressed_btn.custom_id == "emb:edit:p3:remove":
+                    await pressed_btn.respond()
+                    temp_embeds = [embed, embeds.info(locale.get_message("cog_embed_builder_info_select_field"))]
+                    await msg.edit(embeds=temp_embeds, components=[SelectMenu("field", options=[SelectOption(i, label=locale.get_message("cog_embed_builder_component_labels_p3_field_select", name=_.name, number=i+1)) for i, _ in enumerate(embed.fields)])])
+                    try:
+                        selected = await msg.wait_for("select", self.bot, by=ctx.author, timeout=15)
+                        await selected.respond()
+                        sel = int(selected.selected_values[0].value)
+                        embed.remove_field(sel)
+                        set_components = (True, field_components(len(embed.fields)))
+                    except asyncio.TimeoutError:
+                        set_components = (True, field_components(len(embed.fields)))
+                elif pressed_btn.custom_id == "emb:edit:p3:edit":
+                    await pressed_btn.respond()
+                    temp_embeds = [embed, embeds.info(locale.get_message("cog_embed_builder_info_select_field"))]
+                    await msg.edit(embeds=temp_embeds, components=[SelectMenu("field", options=[SelectOption(i, label=locale.get_message("cog_embed_builder_component_labels_p3_field_select", name=_.name, number=i+1)) for i, _ in enumerate(embed.fields)])])
+                    try:
+                        selected = await msg.wait_for("select", self.bot, by=ctx.author, timeout=15)
+                        await selected.respond()
+                        sel = int(selected.selected_values[0].value)
+                        set_components = (True, field_edit_components(sel, embed.fields[sel].inline))
+                    except asyncio.TimeoutError:
+                        set_components = (True, field_components(len(embed.fields)))
+                elif pressed_btn.custom_id.startswith("emb:edit:p4:name:"):
+                    await pressed_btn.respond()
+                    field_index = int(pressed_btn.custom_id.split(":")[4])
+                    try:
+                        actions +=1
+                        await msg.edit(content=locale.get_message("cog_embed_builder_wait_for_message"))
+                        await msg.disable_components()
+                        w_f = await self.bot.wait_for("message", check=lambda m: m.author.id == ctx.author.id, timeout=30)
+                        embed.set_field_at(field_index, name=w_f.content, value=embed.fields[field_index].value, inline=embed.fields[field_index].inline)
+                        set_components = (True, field_edit_components(sel, embed.fields[sel].inline))
+                    except asyncio.TimeoutError:
+                        actions =- 1
+                        set_components = (True, field_edit_components(sel, embed.fields[sel].inline))
+                        break
+                elif pressed_btn.custom_id.startswith("emb:edit:p4:value:"):
+                    await pressed_btn.respond()
+                    field_index = int(pressed_btn.custom_id.split(":")[4])
+                    try:
+                        actions +=1
+                        await msg.edit(content=locale.get_message("cog_embed_builder_wait_for_message"))
+                        await msg.disable_components()
+                        w_f = await self.bot.wait_for("message", check=lambda m: m.author.id == ctx.author.id, timeout=30)
+                        embed.set_field_at(field_index, name=embed.fields[field_index].name, value=w_f.content, inline=embed.fields[field_index].inline)
+                        set_components = (True, field_edit_components(sel, embed.fields[sel].inline))
+                    except asyncio.TimeoutError:
+                        actions =- 1
+                        set_components = (True, field_edit_components(sel, embed.fields[sel].inline))
+                        break
+                elif pressed_btn.custom_id.startswith("emb:edit:p4:inline:"):
+                    await pressed_btn.respond()
+                    field_index = int(pressed_btn.custom_id.split(":")[4])
+                    embed.set_field_at(field_index, name=embed.fields[field_index].name, value=embed.fields[field_index].value, inline=not embed.fields[field_index].inline)
+                    set_components = (True, field_edit_components(sel, embed.fields[sel].inline))
+                elif pressed_btn.custom_id == "emb:edit:p4:back":
+                    await pressed_btn.respond()
+                    set_components = (True, field_components(len(embed.fields)))
+                elif pressed_btn.custom_id == "emb:edit:main":
+                    await pressed_btn.respond()
+                    set_components = (True, components)
                 try:
-                    if set_components[0]:
-                        await msg.edit(embed=embed, content=locale.get_message("cog_embed_builder_you_can_edit_now"), components=set_components[1])
-                    else:
-                        await msg.edit(embed=embed, content=locale.get_message("cog_embed_builder_you_can_edit_now"))
+                    if edit_after:
+                        if set_components[0]:
+                            await msg.edit(embed=embed, content=locale.get_message("cog_embed_builder_you_can_edit_now"), components=set_components[1])
+                        else:
+                            await msg.edit(embed=embed, content=locale.get_message("cog_embed_builder_you_can_edit_now"))
                 except Exception as ex:
                     await ctx.channel.purge(limit=actions, check=lambda m: m.author.id == ctx.author.id, bulk=True)
                     await msg.edit(embed=embeds.fail(locale.get_message("cog_embed_builder_edit_failed")), components=None)

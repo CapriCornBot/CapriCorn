@@ -1,3 +1,4 @@
+import asyncio
 from utils.database import Database
 import discord
 from discord.ext import commands, tasks
@@ -26,6 +27,7 @@ client.db.connect()
 
 @client.listen('on_connect')
 async def on_connect():
+    await client.change_presence(status=discord.Status.dnd, activity=discord.Game(name=f"Starting Up..."))
     log.info("Verbindung mit der Discord API Hergestellt!")
     log.info(
         "╔═════════════════╦══════════════════════════════════════════════════════════════════════════════════════╗"
@@ -48,6 +50,9 @@ async def on_connect():
     #client.loop.create_task(client.www.app.run(debug=True, use_reloader=False))
     #client.www.thread.start()
 
+@client.listen('on_ready')
+async def on_ready():
+    await client.change_presence(activity=discord.Game(name=f"v0.1 | capricornbot.de"))
 
 load_cogs(client)
 
