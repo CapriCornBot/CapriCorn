@@ -37,5 +37,9 @@
     "cog_embed_builder_component_labels_p4_title": "Title",
     "cog_embed_builder_component_labels_p4_value": "Value",
     "cog_embed_builder_component_labels_p4_inline": "Inline",
-    "cog_embed_builder_component_labels_p4_back": "Back"
+    "cog_embed_builder_component_labels_p4_back": "Back",
+    "cog_embed_builder_edit_invalid_hex": "Specified ivalid color",
+    "cog_embed_builder_edit_invalid_url": "Specified ivalid url",
+    "cog_embed_builder_component_labels_p1_thumbnail": "Thumbnail",
+    "cog_embed_builder_component_labels_p1_image": "Image"
 }

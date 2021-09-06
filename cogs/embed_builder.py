@@ -44,7 +44,9 @@ class EmbedBuilder(commands.Cog):
                 Button("emb:edit:p1:description", locale.get_message("cog_embed_builder_component_labels_p1_description")),
                 Button("emb:edit:p1:author", locale.get_message("cog_embed_builder_component_labels_p1_author")),
                 Button("emb:edit:p1:color", locale.get_message("cog_embed_builder_component_labels_p1_color")),
-                Button("emb:edit:p1:fields", locale.get_message("cog_embed_builder_component_labels_p1_fields")),
+                Button("emb:edit:p1:image"locale.get_message("cog_embed_builder_component_labels_p1_image")),
+                Button("emb:edit:p1:thumbnail", locale.get_message("cog_embed_builder_component_labels_p1_thumbnail")),
+                Button("emb:edit:p1:fields", locale.get_message("cog_embed_builder_component_labels_p1_fields"))
             ],
             [
                 Button("emb:edit:p1:save", locale.get_message("cog_embed_builder_component_labels_p1_save"), color="green"),
@@ -58,7 +60,7 @@ class EmbedBuilder(commands.Cog):
                 Button("emb:edit:p2:icon", locale.get_message("cog_embed_builder_component_labels_p2_author_icon"))
             ],
             [
-                Button("emb:edit:p2:back", locale.get_message("cog_embed_builder_component_labels_p2_back"), color="green")
+                Button("emb:edit:p2:back", locale.get_message("cog_embed_builder_component_labels_p2_back"), color="gray")
             ]
         ]
         def field_components(used_fields = 0, max_fields: int = 25):
@@ -69,7 +71,7 @@ class EmbedBuilder(commands.Cog):
                     Button("emb:edit:p3:edit", locale.get_message("cog_embed_builder_component_labels_p3_edit"), color="green")
                 ],
                 [
-                    Button("emb:edit:p3:back", locale.get_message("cog_embed_builder_component_labels_p3_back"), color="green"),
+                    Button("emb:edit:p3:back", locale.get_message("cog_embed_builder_component_labels_p3_back"), color="gray"),
                 ]
             ]
             if used_fields == max_fields:
@@ -87,8 +89,8 @@ class EmbedBuilder(commands.Cog):
                     Button(f"emb:edit:p4:inline:{index}", locale.get_message("cog_embed_builder_component_labels_p4_inline"), color="green" if inline else "red"),
                 ],
                 [
-                    Button("emb:edit:p4:back", locale.get_message("cog_embed_builder_component_labels_p4_back"), color="green"),
-                    Button("emb:edit:main", "\u200b", emoji="🏠"),
+                    Button("emb:edit:p4:back", locale.get_message("cog_embed_builder_component_labels_p4_back"), color="gray"),
+                    Button("emb:edit:main", "\u200b", emoji="🏠", color="gray"),
                 ]
             ]
             return cmpnts
@@ -168,11 +170,45 @@ class EmbedBuilder(commands.Cog):
                         await msg.edit(content=locale.get_message("cog_embed_builder_wait_for_message"))
                         await msg.disable_components()
                         w_f: discord.Message = await self.bot.wait_for("message", check=lambda m: m.author.id == ctx.author.id, timeout=30)
-                        hex_int = int(w_f.content, 16)
-                        hex_value = hex(hex_int)
+                        try:
+                            hex_int = int(w_f.content, 16)
+                        except:
+                            await msg.edit(embed=embeds.fail(locale.get_message(""cog_embed_builder_edit_invalid_hex")))
+                            break
                         embed.colour = hex_int
                         set_components = (True, components)
-                        
+                    except asyncio.TimeoutError:
+                        actions =- 1
+                        await msg.edit(embed=embeds.fail(locale.get_message("cog_embed_builder_timeout")))
+                        break
+                elif pressed_btn.custom_id == "emb:edit:p1:image":
+                    await pressed_btn.respond()
+                    try:
+                        actions +=1
+                        await msg.edit(content=locale.get_message("cog_embed_builder_wait_for_message"))
+                        await msg.disable_components()
+                        w_f: discord.Message = await self.bot.wait_for("message", check=lambda m: m.author.id == ctx.author.id, timeout=30)
+                        if not w_f.content.startswith("http://") and not w_f.content.startswith("https://")
+                            await msg.edit(embed=embeds.fail(locale.get_message("cog_embed_builder_edit_invalid_url")))
+                            break
+                        embed.set_image(url=w_f.content)
+                        set_components = (True, components)
+                    except asyncio.TimeoutError:
+                        actions =- 1
+                        await msg.edit(embed=embeds.fail(locale.get_message("cog_embed_builder_timeout")))
+                        break
+                elif pressed_btn.custom_id == "emb:edit:p1:thumbnail":
+                    await pressed_btn.respond()
+                    try:
+                        actions +=1
+                        await msg.edit(content=locale.get_message("cog_embed_builder_wait_for_message"))
+                        await msg.disable_components()
+                        w_f: discord.Message = await self.bot.wait_for("message", check=lambda m: m.author.id == ctx.author.id, timeout=30)
+                        if not w_f.content.startswith("http://") and not w_f.content.startswith("https://")
+                            await msg.edit(embed=embeds.fail(locale.get_message("cog_embed_builder_edit_invalid_url")))
+                            break
+                        embed.set_thumbnail(url=w_f.content)
+                        set_components = (True, components)
                     except asyncio.TimeoutError:
                         actions =- 1
                         await msg.edit(embed=embeds.fail(locale.get_message("cog_embed_builder_timeout")))
@@ -216,10 +252,11 @@ class EmbedBuilder(commands.Cog):
                         await msg.disable_components()
                         w_f = await self.bot.wait_for("message", check=lambda m: m.author.id == ctx.author.id, timeout=30)
                         url = w_f.content
-                        icon = embed.author.icon_url
-                        name = embed.author.name
-                        embed.set_author(name=name, url=url, icon_url=icon)
-                        set_components = (True, author_components)
+                        if url.startswith(("http://", "https://")):
+                            embed.set_author(name=embed.author.name, url=url, icon_url=embed.author.icon_url)
+                            set_components = (True, author_components)
+                        else:
+                            set_components = (True, author_components)
                     except asyncio.TimeoutError:
                         actions =- 1
                         await msg.edit(embed=embeds.fail(locale.get_message("cog_embed_builder_timeout")))
@@ -232,10 +269,12 @@ class EmbedBuilder(commands.Cog):
                         await msg.disable_components()
                         w_f = await self.bot.wait_for("message", check=lambda m: m.author.id == ctx.author.id, timeout=30)
                         url = embed.author.url
-                        icon = w_f.content
-                        name = embed.author.name
-                        embed.set_author(name=name, url=url, icon_url=icon)
-                        set_components = (True, author_components)
+                        if url.startswith(("http://", "https://")):
+                            icon = w_f.content
+                            embed.set_author(name=embed.author.name, url=url, icon_url=icon)
+                            set_components = (True, author_components)
+                        else:
+                            set_components = (True, author_components)
                     except asyncio.TimeoutError:
                         actions =- 1
                         await msg.edit(embed=embeds.fail(locale.get_message("cog_embed_builder_timeout")))
