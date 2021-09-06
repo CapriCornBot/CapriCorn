@@ -146,8 +146,8 @@ class EmbedBuilder(commands.Cog):
                         set_components = (True, components)
                     except asyncio.TimeoutError:
                         actions =- 1
-                        await msg.edit(embed=embeds.fail(locale.get_message("cog_embed_builder_timeout")), components=None)
-                        break
+                        await msg.edit(embeds=[embed, embeds.fail(locale.get_message("cog_embed_builder_timeout"))], components=components, content=locale.get_message("cog_embed_builder_you_can_edit_now"))
+                        edit_after = False
                 elif pressed_btn.custom_id == "emb:edit:p1:description":
                     await pressed_btn.respond()
                     try:
@@ -162,8 +162,8 @@ class EmbedBuilder(commands.Cog):
                         set_components = (True, components)
                     except asyncio.TimeoutError:
                         actions =- 1
-                        await msg.edit(embed=embeds.fail(locale.get_message("cog_embed_builder_timeout")))
-                        break
+                        await msg.edit(embeds=[embed, embeds.fail(locale.get_message("cog_embed_builder_timeout"))], components=components, content=locale.get_message("cog_embed_builder_you_can_edit_now"))
+                        edit_after = False
                 elif pressed_btn.custom_id == "emb:edit:p1:author":
                     await pressed_btn.respond()
                     await msg.edit(components=author_components)
@@ -186,8 +186,8 @@ class EmbedBuilder(commands.Cog):
                         set_components = (True, components)
                     except asyncio.TimeoutError:
                         actions =- 1
-                        await msg.edit(embed=embeds.fail(locale.get_message("cog_embed_builder_timeout")))
-                        break
+                        await msg.edit(embeds=[embed, embeds.fail(locale.get_message("cog_embed_builder_timeout"))], components=components, content=locale.get_message("cog_embed_builder_you_can_edit_now"))
+                        edit_after = False
                 elif pressed_btn.custom_id == "emb:edit:p1:image":
                     await pressed_btn.respond()
                     try:
@@ -206,8 +206,8 @@ class EmbedBuilder(commands.Cog):
                         set_components = (True, components)
                     except asyncio.TimeoutError:
                         actions =- 1
-                        await msg.edit(embed=embeds.fail(locale.get_message("cog_embed_builder_timeout")))
-                        break
+                        await msg.edit(embeds=[embed, embeds.fail(locale.get_message("cog_embed_builder_timeout"))], components=components, content=locale.get_message("cog_embed_builder_you_can_edit_now"))
+                        edit_after = False
                 elif pressed_btn.custom_id == "emb:edit:p1:thumbnail":
                     await pressed_btn.respond()
                     try:
@@ -226,8 +226,8 @@ class EmbedBuilder(commands.Cog):
                         set_components = (True, components)
                     except asyncio.TimeoutError:
                         actions =- 1
-                        await msg.edit(embed=embeds.fail(locale.get_message("cog_embed_builder_timeout")))
-                        break
+                        await msg.edit(embeds=[embed, embeds.fail(locale.get_message("cog_embed_builder_timeout"))], components=components, content=locale.get_message("cog_embed_builder_you_can_edit_now"))
+                        edit_after = False
                 elif pressed_btn.custom_id == "emb:edit:p1:save":
                     await pressed_btn.respond()
                     try:
@@ -386,7 +386,7 @@ class EmbedBuilder(commands.Cog):
                     await msg.edit(embed=embeds.fail(locale.get_message("cog_embed_builder_edit_failed")), components=None)
                     raise
             except asyncio.TimeoutError as ex:
-                pass
+                await msg.edit(embeds=[embeds.fail(locale.get_message("cog_embed_builder_timeout"))], components=None, content=None)
 
     @commands.Cog.listener("on_ready")
     async def on_ready(self):
