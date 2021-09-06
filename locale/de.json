@@ -1,4 +1,6 @@
 {
     "global_embed_error_title": "Fehler",
-    "cog_embed_builder_edit_not_own": "Du kannst nur Nachrichten editieren, die ich gesendet habe"
+    "cog_embed_builder_edit_not_own": "Du kannst nur Nachrichten editieren, die ich gesendet habe",
+    "cog_embed_builder_component_labels_p3_field_select": "%number%. %name%",
+    "cog_embed_builder_component_labels_p3_add": "Feld Hinzufügen (%used%/%max%)"
 }
