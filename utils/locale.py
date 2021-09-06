@@ -27,7 +27,7 @@ class Locale:
 
     def get_message(self, message_key, **kwargs):
         if self.messages.get(message_key) is None:
-            return f"Message not found! ({message_key})"
+            return f"{message_key}"
         message = self.messages.get(message_key)
         for key, value in kwargs.items():
             message = message.replace(f"%{key}%", str(value))

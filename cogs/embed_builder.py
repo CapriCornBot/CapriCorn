@@ -42,8 +42,9 @@ class EmbedBuilder(commands.Cog):
             [
                 Button("emb:edit:p1:title", locale.get_message("cog_embed_builder_component_labels_p1_title")),
                 Button("emb:edit:p1:description", locale.get_message("cog_embed_builder_component_labels_p1_description")),
+                Button("emb:edit:p1:author", locale.get_message("cog_embed_builder_component_labels_p1_author")),
                 Button("emb:edit:p1:color", locale.get_message("cog_embed_builder_component_labels_p1_color")),
-                Button("emb:edit:p1:author", locale.get_message("cog_embed_builder_component_labels_p1_author"))
+                Button("emb:edit:p1:fields", locale.get_message("cog_embed_builder_component_labels_p1_fields")),
             ],
             [
                 Button("emb:edit:p1:save", locale.get_message("cog_embed_builder_component_labels_p1_save"), color="green"),
@@ -60,6 +61,20 @@ class EmbedBuilder(commands.Cog):
                 Button("emb:edit:p2:back", locale.get_message("cog_embed_builder_component_labels_p2_back"), color="green")
             ]
         ]
+        def field_components(can_edit: bool):
+            field_components_1 = [
+                [
+                    Button("emb:edit:p3:add", locale.get_message("cog_embed_builder_component_labels_p3_add"), color="green"),
+                    Button("emb:edit:p3:remove", locale.get_message("cog_embed_builder_component_labels_p3_remove"), color="red"),
+                    Button("emb:edit:p3:edit", locale.get_message("cog_embed_builder_component_labels_p3_edit"), color="green")
+                ],
+                [
+                    Button("emb:edit:p3:back", locale.get_message("cog_embed_builder_component_labels_p3_back"), color="green")
+                ]
+            ]
+            if can_edit == False:
+                field_components_1[0][2].disabled = True
+            return field_components_1
 
         msg = None
         embed_position = 0
@@ -125,6 +140,13 @@ class EmbedBuilder(commands.Cog):
                 elif pressed_btn.custom_id == "emb:edit:p1:author":
                     await pressed_btn.respond()
                     await msg.edit(components=author_components)
+                elif pressed_btn.custom_id == "emb:edit:p1:fields":
+                    await pressed_btn.respond()
+                    print(len(embed.fields))
+                    if len(embed.fields) == 0:
+                        await msg.edit(components=field_components(False))
+                    else:
+                        await msg.edit(components=field_components(True))
                 elif pressed_btn.custom_id == "emb:edit:p1:color":
                     await pressed_btn.respond()
                     try:
