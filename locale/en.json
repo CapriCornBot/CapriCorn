@@ -11,6 +11,7 @@
     "cog_embed_builder_component_labels_p1_description": "Description",
     "cog_embed_builder_component_labels_p1_author": "Author",
     "cog_embed_builder_component_labels_p1_color": "Color (Hex)",
+    "cog_embed_builder_component_labels_p1_fields": "Fields",
     "cog_embed_builder_component_labels_select_embed": "Embed %number%",
     "cog_embed_builder_edit_invalid_position": "Invalid Embed Position! Select an valid Embed",
     "cog_embed_builder_edit_failed": "Failed to edit the Embed!",
@@ -24,5 +25,9 @@
     "cog_embed_builder_component_labels_p2_author_name": "Author name",
     "cog_embed_builder_component_labels_p2_author_url": "Author URL",
     "cog_embed_builder_component_labels_p2_author_icon": "Icon URL",
-    "cog_embed_builder_component_labels_p2_back": "Back"
+    "cog_embed_builder_component_labels_p2_back": "Back",
+    "cog_embed_builder_component_labels_p3_add": "Add Field",
+    "cog_embed_builder_component_labels_p3_remove": "Remove Field",
+    "cog_embed_builder_component_labels_p3_edit": "Edit Field",
+    "cog_embed_builder_component_labels_p3_back": "Back"
 }

@@ -229,8 +229,10 @@ class EmbedBuilder(commands.Cog):
                         break
                 elif pressed_btn.custom_id == "emb:edit:p2:back":
                     await pressed_btn.respond()
-                    await msg.edit(components=components)
-
+                    set_components = (True, components)
+                elif pressed_btn.custom_id == "emb:edit:p3:back":
+                    await pressed_btn.respond()
+                    set_components = (True, components)
                 try:
                     if set_components[0]:
                         await msg.edit(embed=embed, content=locale.get_message("cog_embed_builder_you_can_edit_now"), components=set_components[1])
