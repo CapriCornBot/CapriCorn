@@ -21,7 +21,7 @@ class Settings(commands.Cog):
     async def on_ready(self):
         await self.add_commands_to_guild()
         self.bot.db.execute("CREATE TABLE IF NOT EXISTS cc_settings( `id` INT NOT NULL ,`guild_id` TEXT NOT NULL, `last_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `welcome_channel` TEXT NULL , `welcome_embed` TEXT NULL ) ENGINE = InnoDB;")
-        # await self.ui.slash.sync_commands(True)
+        await self.ui.slash.sync_commands(True)
 
     async def handle_slash_settings_1(ctx):
         pass
@@ -41,12 +41,15 @@ class Settings(commands.Cog):
                     pass
             if ctx.base_names == ["settings", "welcome"]:
                 await ctx.respond("Test")
+            if ctx.base_names == ["settings", "vote"]:
+                if ctx.name == "vote":
+                    await ctx.respond("Testing")
         
 
     async def add_commands_to_guild(self):
         #guilds = self.bot.fetch_guilds(limit=None)
         self.ui.slash.add_subcommand(["settings", "welcome"], "message", guild_ids=[883465097283002439], options=[SlashOption(str, "Nachricht", "Welcome message", True)])
-        self.ui.slash.add_subcommand(["settings", "welcome2"], "message", guild_ids=[883465097283002439], options=[SlashOption(str, "Nachricht", "Welcome message", True)])
+        self.ui.slash.add_subcommand(["settings", "vote"], "link", guild_ids=[883465097283002439], options=[SlashOption(str, "vote_link", "Vote link", True)])
 
 def setup(bot: commands.Bot):
     bot.add_cog(Settings(bot))

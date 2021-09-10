@@ -11,8 +11,11 @@ class Socket:
         self.register_events()
     
     async def connect(self):
-        await self.socket.connect(self.host)
-
+        try:
+            await self.socket.connect(self.host)
+        except:
+            pass
+        
 
     def register_events(self):
         @self.socket.on('connect')
