@@ -1,9 +1,10 @@
 import asyncio
 from re import M
 import discord
+from config import config
 from discord.ext import commands
 from discord_ui.cogs import subslash_cog, context_cog, slash_cog  
-from discord_ui import UI, SlashedSubCommand, EphemeralMessage, SlashOption, ActionRow, Button, PressedButton, SelectOption, SelectMenu
+from discord_ui import UI, SlashedSubCommand, EphemeralMessage, SlashOption, ActionRow, Button, PressedButton, SelectOption, SelectMenu, LinkButton
 from utils.locale import Locale
 from utils.embeds import Embeds
 
@@ -47,7 +48,8 @@ class EmbedBuilder(commands.Cog):
                 Button("emb:edit:p1:image", locale.get_message("cog_embed_builder_component_labels_p1_image")),
             ],[
                 Button("emb:edit:p1:thumbnail", locale.get_message("cog_embed_builder_component_labels_p1_thumbnail")),
-                Button("emb:edit:p1:fields", locale.get_message("cog_embed_builder_component_labels_p1_fields"))
+                Button("emb:edit:p1:fields", locale.get_message("cog_embed_builder_component_labels_p1_fields")),
+                Button("emb:edit:p1:json", locale.get_message("cog_embed_builder_component_labels_p1_json")),
             ],
             [
                 Button("emb:edit:p1:save", locale.get_message("cog_embed_builder_component_labels_p1_save"), color="green"),
@@ -228,6 +230,11 @@ class EmbedBuilder(commands.Cog):
                         actions =- 1
                         await msg.edit(embeds=[embed, embeds.fail(locale.get_message("cog_embed_builder_timeout"))], components=components, content=locale.get_message("cog_embed_builder_you_can_edit_now"))
                         edit_after = False
+                elif pressed_btn.custom_id == "emb:edit:p1:json":
+                    await pressed_btn.respond()
+                    new_components = [Button("emb:edit:main", "\u200b", emoji="🏠", color="gray"), LinkButton(f"{config.webserver_url}json/export/{message.channel.id}/{message.id}", label=locale.get_message("cog_embed_builder_component_labels_p5_export"))]
+                    await msg.edit(components=new_components, embeds=[embed, embeds.info(locale.get_message("cog_embed_builder_json_export_info"))])
+                    edit_after = False
                 elif pressed_btn.custom_id == "emb:edit:p1:save":
                     await pressed_btn.respond()
                     try:

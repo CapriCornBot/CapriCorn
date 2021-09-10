@@ -35,5 +35,13 @@ class Config:
         load_dotenv()
         return os.getenv('MYSQL_PORT')
 
+    @property
+    def gateway_url(self):
+        load_dotenv()
+        return os.getenv('GATEWAY_URL')
 
+    @property
+    def webserver_url(self):
+        load_dotenv()
+        return os.getenv('WEBSERVER_URL')
 config = Config()

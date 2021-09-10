@@ -1,4 +1,5 @@
-Translations repository created by Weblate
-==========================================
-
-See https://weblate.org/ for more info.
+| CODE | Action |
+|------|--------|
+|1     |JSON EXPORT (Web)        |
+|      |        |
+|      |        |

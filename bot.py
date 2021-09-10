@@ -1,4 +1,5 @@
 import asyncio
+from utils.socket import Socket
 from utils.database import Database
 import discord
 from discord.ext import commands, tasks
@@ -23,6 +24,8 @@ client.http.token = DISCORD_TOKEN
 client.logger = logger.register_logger("bot.log", BOT_NAME)
 client.db = Database(client)
 client.db.connect()
+client.socket = Socket(client, config.gateway_url)
+client.loop.run_until_complete(client.socket.connect())
 
 
 @client.listen('on_connect')
