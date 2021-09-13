@@ -395,9 +395,5 @@ class EmbedBuilder(commands.Cog):
             except asyncio.TimeoutError as ex:
                 await msg.edit(embeds=[embeds.fail(locale.get_message("cog_embed_builder_timeout"))], components=None, content=None)
 
-    @commands.Cog.listener("on_ready")
-    async def on_ready(self):
-        await self.bot.ui.slash.sync_commands(True)
-
 def setup(bot):
     bot.add_cog(EmbedBuilder(bot))

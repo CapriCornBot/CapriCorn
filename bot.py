@@ -1,6 +1,7 @@
 import asyncio
 from utils.socket import Socket
 from utils.database import Database
+from utils.mongodb import MongoDB
 import discord
 from discord.ext import commands, tasks
 from discord_ui import UI
@@ -24,6 +25,7 @@ client.http.token = DISCORD_TOKEN
 client.logger = logger.register_logger("bot.log", BOT_NAME)
 client.db = Database(client)
 client.db.connect()
+client.mongodb = MongoDB()
 client.socket = Socket(client, config.gateway_url)
 client.loop.run_until_complete(client.socket.connect())
 
@@ -56,6 +58,9 @@ async def on_connect():
 @client.listen('on_ready')
 async def on_ready():
     await client.change_presence(activity=discord.Game(name=f"v0.1 | capricornbot.de"))
+    await asyncio.sleep(5)
+    await client.ui.slash.sync_commands(True)
+    print(await client.ui.slash._get_commands())
 
 load_cogs(client)
 

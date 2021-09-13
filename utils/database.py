@@ -54,6 +54,8 @@ class Database:
 
 
     def execute(self, query: str, params: dict = None) -> None:
+        if not self.check_connection():
+            self.connection.reconnect()
         self.cursor.execute(query, params)
     
     def fetchone(self) -> dict:
