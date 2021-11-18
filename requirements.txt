@@ -1,5 +1,0 @@
-git+https://github.com/AnimeJunkies-tv/discord.py
-discord-ui
-nest-asyncio
-python-dotenv
-colorama
