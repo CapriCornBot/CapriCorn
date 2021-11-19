@@ -11,6 +11,7 @@ export const event: Event = {
                 const data = new MessageActionRow().addComponents(new MessageButton().setLabel('Test').setCustomId('test').setStyle('PRIMARY'));
                 await interaction.reply({content: "Test", components: [data]});
             }
+            client.commands.find(c => c.name === interaction.commandName).run(client, interaction);
         }else if(interaction.isContextMenu()) {
             console.log(`Context Menu: ${interaction.commandName}`);
         }else if(interaction.isButton()) {
