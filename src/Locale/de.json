@@ -1,3 +1,6 @@
 {
-    "123": "Testing"
+    "123": "Testing",
+    "test": {
+        "123": "Testing"
+    }
 }
