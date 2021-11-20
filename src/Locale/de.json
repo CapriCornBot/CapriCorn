@@ -1,6 +1,18 @@
 {
-    "123": "Testing",
-    "test": {
-        "123": "Testing"
+    "embed_creator": {
+        "default_embed": {
+            "title": "Titel",
+            "description": "Beschreibung",
+            "fields": [
+                {
+                    "name": "Feldname",
+                    "value": "Feldwert"
+                }
+            ],
+            "footer": {
+                "text": "Fußzeile",
+                "icon_url": "https://example.com/icon.png"
+            }
+        }
     }
 }
