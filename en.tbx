@@ -10,10 +10,6 @@
     </martifHeader>
     <text>
         <body>
-            <termEntry id="123">
-                <langSet xml:lang="de"><tig><term>123</term></tig></langSet>
-                <langSet xml:lang="en"><tig><term></term></tig></langSet>
-            </termEntry>
-        </body>
+            </body>
     </text>
 </martif>
