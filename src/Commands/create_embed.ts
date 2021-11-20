@@ -25,8 +25,6 @@ export const command: SlashCMD = {
         if (amount === undefined) {
             amount = 1;
         }
-        let embed = new Embed()
-        embed.setTitle("Test");
         
             
 

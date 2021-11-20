@@ -6,11 +6,11 @@ export const event: Event = {
     run: async (client: Client, interaction: Interaction) => {
         console.log(`Interaction created: ${interaction.id}`);
         if(interaction.isCommand()) {
-            console.log(`Command: ${interaction.commandName}`);
-            if(interaction.commandName === 'test') {
-                const data = new MessageActionRow().addComponents(new MessageButton().setLabel('Test').setCustomId('test').setStyle('PRIMARY'));
-                await interaction.reply({content: "Test", components: [data]});
-            }
+            // console.log(`Command: ${interaction.commandName}`);
+            // if(interaction.commandName === 'test') {
+            //     const data = new MessageActionRow().addComponents(new MessageButton().setLabel('Test').setCustomId('test').setStyle('PRIMARY'));
+            //     await interaction.reply({content: "Test", components: [data]});
+            // }
             client.commands.find(c => c.name === interaction.commandName).run(client, interaction);
         }else if(interaction.isContextMenu()) {
             console.log(`Context Menu: ${interaction.commandName}`);
