@@ -1,6 +1,6 @@
-import { CommandInteraction } from "discord.js";
+import { AutocompleteInteraction, CommandInteraction, Guild } from "discord.js";
 import Client from "../Client";
-import { } from "discord.js"
+
 import { SlashCommandBuilder } from "@discordjs/builders";
 
 interface Run {
@@ -12,12 +12,17 @@ interface Init {
 }
 
 interface SlashCommand {
-    (client: Client, guildId: string): SlashCommandBuilder;
+    (client: Client, guild: Guild): void;
+}
+
+interface AutoCompleteHandler {
+    (client: Client, interaction: AutocompleteInteraction): void;
 }
 
 export interface SlashCMD {
     name: string;
-    slashCommand: SlashCommand;
+    addSlashCommand: SlashCommand;
     run: Run;
     init: Init;
+    autoCompleteHandler?: AutoCompleteHandler;
 }

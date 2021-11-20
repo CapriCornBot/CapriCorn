@@ -21,7 +21,7 @@ class ExtendedClient extends Client {
         readdirSync(eventPath).forEach(async file => {
             const { event } = await import(`${eventPath}/${file}`)
             this.events.set(event.name, event);
-            console.log(event);
+            //console.log(event);
             this.on(event.name, event.run.bind(null, this));
         });
 
@@ -29,7 +29,7 @@ class ExtendedClient extends Client {
         readdirSync(commandPath).forEach(async file => {
             const { command } = await import(`${commandPath}/${file}`)
             this.commands.set(command.name, command);
-            console.log(command);
+            //console.log(command);
             command.init(this);
         });
     }

@@ -1,6 +1,7 @@
 import { Event } from "../Interfaces";
 import Client from "../Client";
-import { Interaction, MessageActionRow, MessageButton } from "discord.js";
+import { AutocompleteInteraction, Interaction, MessageActionRow, MessageButton } from "discord.js";
+import { Embed } from "@discordjs/builders";
 export const event: Event = {
     name: 'interactionCreate',
     run: async (client: Client, interaction: Interaction) => {
@@ -11,14 +12,30 @@ export const event: Event = {
             //     const data = new MessageActionRow().addComponents(new MessageButton().setLabel('Test').setCustomId('test').setStyle('PRIMARY'));
             //     await interaction.reply({content: "Test", components: [data]});
             // }
-            client.commands.find(c => c.name === interaction.commandName).run(client, interaction);
+            let d = client.commands.find(c => c.name === interaction.commandName);
+            if(d) {
+                d.run(client, interaction);
+            }else {
+                console.log(`Command not found: ${interaction.commandName}`);
+                let content_emb = new Embed()
+                content_emb.setTitle(`Command not found: ${interaction.commandName}`)
+                content_emb.setDescription(`Please contact the developer of this bot.`)
+                content_emb.setColor(15158332)
+                interaction.reply({ephemeral: true, embeds: [content_emb]});
+            }
         }else if(interaction.isContextMenu()) {
             console.log(`Context Menu: ${interaction.commandName}`);
         }else if(interaction.isButton()) {
             console.log(`Button: ${interaction}`);
-            console.log(interaction.component)
+            //console.log(interaction.component)
             let button: MessageButton = interaction.component as MessageButton;
             interaction.reply({content: "Button mit Label: `" + button.label + "` gedrückt"});
+        }else if(interaction.isAutocomplete()) {
+            console.log(`Autocomplete: ${interaction.commandName}`);
+            let d = client.commands.find(c => c.name === interaction.commandName)
+            if(d) {
+                d.autoCompleteHandler(client, interaction as AutocompleteInteraction);
+            }
         }
     }
 }
