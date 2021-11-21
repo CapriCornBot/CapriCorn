@@ -10,6 +10,7 @@
   },
   "main": "src/index.ts",
   "scripts": {
-    "start": "ts-node --transpile-only ./src/index.ts"
+    "start": "ts-node --transpile-only ./src/index.ts",
+    "build": "tsc"
   }
 }

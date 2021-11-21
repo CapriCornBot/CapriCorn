@@ -29,7 +29,7 @@ class Locale {
     }
 
 
-    async getString(locale, key) {
+    async getString(locale: string, key: string, ...replacements: string[]) {
         if(!this.json_loaded) {
             await this.loadJson();
             this.json_loaded = true;
@@ -51,13 +51,25 @@ class Locale {
         if(json) {
             string = json;
         }
+        console.log(typeof string);
         if(string == "" || string == undefined || string == null) {
             return "String Not Found! " + key;
         }
+
+        if(replacements.length > 0) {
+            for(let i = 0; i < replacements.length; i++) {
+                string = string.replace("{" + i + "}", replacements[i]);
+            }
+        }
+        // get content betwen {}
+        let s: string = String(string);
+        console.log(typeof s)
+        let content = s.match(/\{.*?\}/g);
+        console.log(content);        
         return string;
     }
 
-    async getFullLocale(locale) {
+    async getFullLocale(locale: string) {
         if(!this.json_loaded) {
             await this.loadJson();
             this.json_loaded = true;
@@ -69,7 +81,7 @@ class Locale {
         return json;
     }
 
-    async getLocale(guildId) {
+    async getLocale(guildId: string) {
         const db = await Database.db;
         const entry = await db.collection("settings").findOne({guildId: guildId + ""});
         if(entry) {
