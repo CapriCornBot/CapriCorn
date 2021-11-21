@@ -35,15 +35,26 @@ class Locale {
             this.json_loaded = true;
         }
         let json = this.json.get(locale);
-        //console.log(json);
-        const splited_key = key.split(".");
-        //console.log(splited_key);
-        if(splited_key.length > 1) {
-            for(let i = 0; i < splited_key.length; i++) {
-                json = json[splited_key[i]];
+        let string = "";
+        try {
+            const splited_key = key.split(".");
+            if(splited_key.length > 1) {
+                for(let i = 0; i < splited_key.length; i++) {
+                    json = json[splited_key[i]];
+                }
+            }else {
+                string = json[key];
             }
+        }catch(e) {
+            return "String Not Found! " + key;
         }
-        return json;
+        if(json) {
+            string = json;
+        }
+        if(string == "" || string == undefined || string == null) {
+            return "String Not Found! " + key;
+        }
+        return string;
     }
 
     async getFullLocale(locale) {
