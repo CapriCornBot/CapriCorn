@@ -16,6 +16,6 @@
         },
         "embed_single": "Embed",
         "embed_multiple": "Embeds",
-        "embed_created": "Es wurden {0} {{0} >= 1 ? 'Embeds' : 'Embed'} in {1} gesendet!"
+        "embed_created": "Es wurden {0} {{0} > 1 ? 'Embeds' : 'Embed'} in {1} gesendet!"
     }
 }

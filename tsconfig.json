@@ -1,25 +1,6 @@
 {   
-    "extends": "ts-node/node16/tsconfig.json",
-    "ts-node": {
-        "compilerOptions": {
-            "lib": ["ESNext", "es2020"],
-            "module": "CommonJS",
-            "moduleResolution": "node",
-            "target": "ESNext",
-            "outDir": "dist",
-            "sourceMap": true,
-            "esModuleInterop": true,
-            "experimentalDecorators": true,
-            "emitDecoratorMetadata": true,
-            "allowSyntheticDefaultImports": true,
-            "skipDefaultLibCheck": true,
-            "skipLibCheck": true,
-            "declaration": true,
-            "resolveJsonModule": true
-        }
-    },
     "compilerOptions": {
-        "lib": ["ESNext", "es2020"],
+        "lib": ["ESNext",],
         "module": "CommonJS",
         "moduleResolution": "node",
         "target": "ESNext",

@@ -14,7 +14,7 @@ export const command: SlashCMD = {
         d.setDescription("Creates an embed");
         // add 10 choices
         d.addChannelOption((option) => option.setName("channel").setRequired(true).setDescription("Channel").addChannelType(ChannelType.GuildText));
-        d.addIntegerOption((option) => option.setName("amount").setRequired(true).setDescription("Anzahl"). addChoice("1", 1).addChoice("2", 2).addChoice("3", 3).addChoice("4", 4).addChoice("5", 5).addChoice("6", 6).addChoice("7", 7).addChoice("8", 8).addChoice("9", 9).addChoice("10", 10));
+        d.addIntegerOption((option) => option.setName("amount").setRequired(true).setDescription("Anzahl").addChoice("1", 1).addChoice("2", 2).addChoice("3", 3).addChoice("4", 4).addChoice("5", 5).addChoice("6", 6).addChoice("7", 7).addChoice("8", 8).addChoice("9", 9).addChoice("10", 10));
         guild.commands.create(d.toJSON())
     },
     init: (client: Client) => {
@@ -33,7 +33,7 @@ export const command: SlashCMD = {
         }
         let locale = await Locale.getLocale(interaction.guildId);
         let emb = await Locale.getString(locale, "embed_creator.default_embed");
-        let embeds = [];
+        let embeds: any = [];
         for (let i = 0; i < amount; i++) {
             embeds.push(emb);
         }

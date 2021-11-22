@@ -1,7 +1,5 @@
 import { Event } from '../Interfaces';
 import Client from '../Client';
-import { SlashCommandBuilder } from '@discordjs/builders';
-import { Options } from 'discord.js';
 
 
 export const event: Event = {
@@ -11,9 +9,13 @@ export const event: Event = {
         console.log(`Loading SlashCommands`);
         for (const guild of client.guilds.cache.values()) {
             //console.log(guild);
-            const cmds = await guild.commands.fetch();
+            //const cmds = await guild.commands.fetch();
             client.commands.forEach((value, key) => {
                 value.addSlashCommand(client, guild);
+            });
+
+            client.context_commands.forEach((value, key) => {
+                value.addContextCommand(client, guild);
             });
         }
     }

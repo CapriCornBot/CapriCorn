@@ -16,6 +16,12 @@ export const command: SlashCMD = {
                     description: "Key to test",
                     required: true,
                     autocomplete: true
+                },
+                {
+                    name: "replacements",
+                    type: "STRING",
+                    description: "Replacements",
+                    required: false,
                 }
             ]
         })
@@ -24,13 +30,17 @@ export const command: SlashCMD = {
         
     },
     run: async (client, interaction) => {
-        new SlashCommandBuilder().toJSON
-        let embed = await Locale.getString("de", "embed_creator.default_embed");
+        //let embed = await Locale.getString("de", "embed_creator.default_embed");
         let locale = await Locale.getLocale(interaction.guildId)
+        let replacements = interaction.options.getString("replacements", false);
+        let replacementArray: string[] = [];
+        if (replacements !== undefined && replacements !== "" && replacements !== null) {
+            replacementArray = replacements.split(",");
+        }
         let emb = new Embed();
         emb.setTitle("Sprachen Check!");
         emb.addField({name: "Key", value: interaction.options.getString("key")});
-        let string = await Locale.getString(locale,  interaction.options.getString("key"));
+        let string = await Locale.getString(locale,  interaction.options.getString("key"), ...replacementArray);
         if(typeof string === "object") {
             try {
                 string = JSON.stringify(string, null, 4);
