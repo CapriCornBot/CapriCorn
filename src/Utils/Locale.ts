@@ -1,6 +1,7 @@
 import Database from './Database';
 import { readdirSync } from 'fs';
 import path from 'path';
+import { ExitStatus } from 'typescript';
 class Locale {
 
     private json = new Map();
@@ -51,21 +52,32 @@ class Locale {
         if(json) {
             string = json;
         }
-        console.log(typeof string);
+        // console.log(typeof string);
         if(string == "" || string == undefined || string == null) {
             return "String Not Found! " + key;
         }
 
         if(replacements.length > 0) {
             for(let i = 0; i < replacements.length; i++) {
-                string = string.replace("{" + i + "}", replacements[i]);
+                string = string.replaceAll("{" + i + "}", replacements[i]);
             }
         }
         // get content betwen {}
         let s: string = String(string);
-        console.log(typeof s)
+        // console.log(typeof s)
         let content = s.match(/\{.*?\}/g);
-        console.log(content);        
+        // console.log(content);
+        if(content) {
+            content.forEach(async (c) => {
+                let code = c.replace("{", "").replace("}", "");
+                try {
+                    let t = eval(code);
+                    string = string.replace(c, t);
+                }catch(e) {
+                    console.log(e);
+                }
+            });
+        }
         return string;
     }
 
