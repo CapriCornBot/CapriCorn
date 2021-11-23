@@ -1,5 +1,5 @@
-import { Client, ClientOptions, Collection, GuildEmoji, Message } from "discord.js";
-import { ContextCMD, Event, MessageCMD, SlashCMD } from "../Interfaces";
+import { Client, ClientOptions, Collection } from "discord.js";
+import { ComponentHandler, ContextCMD, Event, SlashCMD } from "../Interfaces";
 import config from "../config.json";
 import path from "path";
 import {readdirSync} from "fs";
@@ -14,6 +14,7 @@ class ExtendedClient extends Client {
     public events: Collection<string, Event> = new Collection();
     public commands: Collection<string, SlashCMD> = new Collection();
     public context_commands: Collection<string, ContextCMD> = new Collection();
+    public component_handler: Collection<string, ComponentHandler> = new Collection();
 
     public async init() {
         await this.login(config.token);
@@ -44,7 +45,14 @@ class ExtendedClient extends Client {
             this.context_commands.set(command.name, command);
             //console.log(command);
             command.init(this);
-        }); 
+        });
+        
+        const componentPath = path.join(__dirname, "..", "ComponentHandler");
+        readdirSync(componentPath).forEach(async file => {
+            const { handler } = await import(`${componentPath}/${file}`)
+            handler.init(this);
+            this.component_handler.set(handler.prefix, handler);
+        });
     }
 
 }

@@ -17,5 +17,16 @@
         "embed_single": "Embed",
         "embed_multiple": "Embeds",
         "embed_created": "Es wurden {0} {{0} > 1 ? 'Embeds' : 'Embed'} in {1} gesendet!"
+    },
+    "context": {
+        "actions": {
+            "selector": {
+                "embed": {
+                    "title": "Wähle die Aktion aus",
+                    "description": "Wähle die Aktion aus, die du mit der Nachricht ausführen willst",
+                    "color": 16562691
+                }
+            }
+        }
     }
 }
