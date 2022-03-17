@@ -1,6 +1,0 @@
-{
-    "token": "",
-    "mongo": {
-        "uri": "mongodb://user:pw@localhost:27017/CapriCorn"
-    }
-}
